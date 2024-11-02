@@ -32,3 +32,63 @@ class TestStatisticsService(unittest.TestCase):
             self.assertEqual(players[i].assists, self.stats._players[i].assists)
 
 
+    def test_loytaa_pelaajan_listalta(self):
+        #luodaan pelaaja joka tiedetään olevan myös listalla
+        player = Player("Kurri",   "EDM", 37, 53)        
+        name = "Kurri"
+        #etsitään pelaajan nimellä lsitalta
+        search_player = self.stats.search(name)
+        #verrataan onko palautetun pelaajan tiedot samat kuin luodumme pelaajan tiedot
+        self.assertEqual(player.name, search_player.name)
+        self.assertEqual(player.team, search_player.team)
+        self.assertEqual(player.goals, search_player.goals)
+        self.assertEqual(player.assists, search_player.assists)
+
+    def test_ei_loyda_pelaajaa_listalta(self):
+        name = "Pekka"
+        #etsitään pelaajaa joka ei ole listalle
+        search_player = self.stats.search(name)
+        #pelaajaa ei ole listalla, eli pitäisi palauttaa None
+        self.assertEqual(search_player, None)
+
+    def test_etsi_tietyn_tiimin_pelaajat(self):
+        #tiimin EDM pelaajien nimet
+        EDM_players = ["Semenko", "Kurri", "Gretzky"]
+        #tiimin EDM pelaajien lista
+        players_from_list = self.stats.team("EDM")
+        #verrataan nimiä
+        for i in range(3):
+            self.assertEqual(EDM_players[i], players_from_list[i].name)
+
+    def test_palauttaa_pelaajat_pisteiden_perusteella(self):
+        PR = PlayerReaderStub() #luodaan PlayerReaderStub olio
+        pelaajat = PR.get_players() #haetaan pelaajat
+        #järjestetään pistejärjestykseen
+        järjestetyt = sorted(pelaajat, reverse=True, key=lambda player: player.points)
+        
+        #rajataan, montako pelaajaa halutaan näyttää
+        järjestetyt_listana= []
+        for i in range(3):
+            järjestetyt_listana.append(järjestetyt[i])
+        
+        #haetaan statistics_servicen kautta pelaajat pistejärjestyksessä
+        haetut= self.stats.top(3)
+
+        #verrataan
+        for i in range(3):
+            self.assertEqual(haetut[i].name, järjestetyt_listana[i].name)
+            self.assertEqual(haetut[i].team, järjestetyt_listana[i].team)
+            self.assertEqual(haetut[i].goals, järjestetyt_listana[i].goals)
+            self.assertEqual(haetut[i].assists, järjestetyt_listana[i].assists)
+
+
+
+        
+
+
+            
+
+
+
+
+
