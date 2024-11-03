@@ -1,5 +1,5 @@
 import unittest
-from statistics_service import StatisticsService
+from statistics_service import StatisticsService, SortBy
 from player import Player
 
 
@@ -72,7 +72,7 @@ class TestStatisticsService(unittest.TestCase):
             järjestetyt_listana.append(järjestetyt[i])
         
         #haetaan statistics_servicen kautta pelaajat pistejärjestyksessä
-        haetut= self.stats.top(3)
+        haetut= self.stats.top(3, SortBy.POINTS)
 
         #verrataan
         for i in range(3):
@@ -81,10 +81,68 @@ class TestStatisticsService(unittest.TestCase):
             self.assertEqual(haetut[i].goals, järjestetyt_listana[i].goals)
             self.assertEqual(haetut[i].assists, järjestetyt_listana[i].assists)
 
-
-
+    def test_palauttaa_pelaajat_assistien_perusteella(self):
+        PR = PlayerReaderStub() #luodaan PlayerReaderStub olio
+        pelaajat = PR.get_players() #haetaan pelaajat
+        #järjestetään assists järjestykseen
+        järjestetyt = sorted(pelaajat, reverse=True, key=lambda player: player.assists)
         
+        #rajataan, montako pelaajaa halutaan näyttää
+        järjestetyt_listana= []
+        for i in range(3):
+            järjestetyt_listana.append(järjestetyt[i])
+        
+        #haetaan statistics_servicen kautta pelaajat assists järjestyksessä
+        haetut= self.stats.top(3, SortBy.ASSISTS)
 
+        #verrataan
+        for i in range(3):
+            self.assertEqual(haetut[i].name, järjestetyt_listana[i].name)
+            self.assertEqual(haetut[i].team, järjestetyt_listana[i].team)
+            self.assertEqual(haetut[i].goals, järjestetyt_listana[i].goals)
+            self.assertEqual(haetut[i].assists, järjestetyt_listana[i].assists)
+   
+    def test_palauttaa_pelaajat_goalsien_perusteella(self):
+        PR = PlayerReaderStub() #luodaan PlayerReaderStub olio
+        pelaajat = PR.get_players() #haetaan pelaajat
+        #järjestetään goalsien järjestykseen
+        järjestetyt = sorted(pelaajat, reverse=True, key=lambda player: player.goals)
+        
+        #rajataan, montako pelaajaa halutaan näyttää
+        järjestetyt_listana= []
+        for i in range(3):
+            järjestetyt_listana.append(järjestetyt[i])
+        
+        #haetaan statistics_servicen kautta pelaajat goals järjestyksessä
+        haetut= self.stats.top(3, SortBy.GOALS)
+
+        #verrataan
+        for i in range(3):
+            self.assertEqual(haetut[i].name, järjestetyt_listana[i].name)
+            self.assertEqual(haetut[i].team, järjestetyt_listana[i].team)
+            self.assertEqual(haetut[i].goals, järjestetyt_listana[i].goals)
+            self.assertEqual(haetut[i].assists, järjestetyt_listana[i].assists)
+
+    def test_jos_ei_ole_sort_by_annettu_palautetaan_pisteiden_perusteella(self):
+        PR = PlayerReaderStub() #luodaan PlayerReaderStub olio
+        pelaajat = PR.get_players() #haetaan pelaajat
+        #järjestetään pistejärjestykseen
+        järjestetyt = sorted(pelaajat, reverse=True, key=lambda player: player.points)
+        
+        #rajataan, montako pelaajaa halutaan näyttää
+        järjestetyt_listana= []
+        for i in range(3):
+            järjestetyt_listana.append(järjestetyt[i])
+        
+        #haetaan statistics_servicen kautta pelaajat pistejärjestyksessä
+        haetut= self.stats.top(3)
+
+        #verrataan
+        for i in range(3):
+            self.assertEqual(haetut[i].name, järjestetyt_listana[i].name)
+            self.assertEqual(haetut[i].team, järjestetyt_listana[i].team)
+            self.assertEqual(haetut[i].goals, järjestetyt_listana[i].goals)
+            self.assertEqual(haetut[i].assists, järjestetyt_listana[i].assists)
 
             
 
