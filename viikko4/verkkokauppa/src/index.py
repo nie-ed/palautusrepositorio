@@ -4,6 +4,8 @@ from varasto import varasto
 from pankki import pankki
 from viitegeneraattori import viitegeneraattori
 
+# 1 täg muutos
+
 def main():
     # käytetään valmiiksi luotuja "oletusarvoisia" varasto-, pankki- ja viitegeneraattoriolioita
     kauppa = Kauppa(varasto, pankki, viitegeneraattori)
