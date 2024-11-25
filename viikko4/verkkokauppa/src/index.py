@@ -6,6 +6,7 @@ from viitegeneraattori import viitegeneraattori
 
 # 1 täg muutos
 # 2 täg muutos
+# 3 täg muutos
 
 def main():
     # käytetään valmiiksi luotuja "oletusarvoisia" varasto-, pankki- ja viitegeneraattoriolioita
