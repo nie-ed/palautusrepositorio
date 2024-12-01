@@ -76,6 +76,7 @@ class Kayttoliittyma:
 
         self._syote_kentta.delete(0, constants.END)
         self._arvo_var.set(self._sovelluslogiikka.arvo())
+        self.edellinen = komento
 
     def _lue_syote(self):
         return self._syote_kentta.get()
@@ -87,10 +88,12 @@ class Summa:
     def __init__(self, sovelluslogiikka, lue):
         self.sovelluslogiikka = sovelluslogiikka
         self.lue = lue
+        self.arvo = self.sovelluslogiikka.arvo()
 
     def suorita(self):
         luku1 = self.lue()
         self.sovelluslogiikka.plus(int(luku1))
+
 
     
 class Erotus:
@@ -102,6 +105,7 @@ class Erotus:
         luku1 = self.lue()
         self.sovelluslogiikka.miinus(int(luku1))
     
+
 class Nollaus:
     def __init__(self, sovelluslogiikka, lue):
         self.sovelluslogiikka = sovelluslogiikka
@@ -109,5 +113,6 @@ class Nollaus:
 
     def suorita(self):
         self.sovelluslogiikka.nollaa()
+
 
 
